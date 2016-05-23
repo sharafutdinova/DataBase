@@ -1,0 +1,18 @@
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\bin\Debug\DataBase.exe.config
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\bin\Debug\DataBase.exe
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\bin\Debug\DataBase.pdb
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\obj\Debug\DataBase.csprojResolveAssemblyReference.cache
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\obj\Debug\DataBase.Properties.Resources.resources
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\obj\Debug\DataBase.csproj.GenerateResource.Cache
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\obj\Debug\DataBase.exe
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\obj\Debug\DataBase.pdb
+e:\Alsu\Documents\Visual Studio 2015\Projects\DataBase\DataBase\obj\Debug\DataBase.Form1.resources
+C:\Users\Alsu\Desktop\DataBase\DataBase\bin\Debug\DataBase.exe.config
+C:\Users\Alsu\Desktop\DataBase\DataBase\obj\Debug\DataBase.exe
+C:\Users\Alsu\Desktop\DataBase\DataBase\obj\Debug\DataBase.pdb
+C:\Users\Alsu\Desktop\DataBase\DataBase\bin\Debug\DataBase.exe
+C:\Users\Alsu\Desktop\DataBase\DataBase\bin\Debug\DataBase.pdb
+C:\Users\Alsu\Desktop\DataBase\DataBase\obj\Debug\DataBase.csprojResolveAssemblyReference.cache
+C:\Users\Alsu\Desktop\DataBase\DataBase\obj\Debug\DataBase.Form1.resources
+C:\Users\Alsu\Desktop\DataBase\DataBase\obj\Debug\DataBase.Properties.Resources.resources
+C:\Users\Alsu\Desktop\DataBase\DataBase\obj\Debug\DataBase.csproj.GenerateResource.Cache
