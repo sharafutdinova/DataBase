@@ -10,7 +10,6 @@ namespace DataBaseManager
     {
         FolderBrowserDialog folderBrowserDialog = null;
         DialogResult dialogResult;
-        DataSet dataBase;
         TextReader reader;
         TabPage tabPage;
         DataGridView dgv;
@@ -33,7 +32,6 @@ namespace DataBaseManager
         //создание пустой базы данных
         private void createDataBase_Click(object sender, EventArgs e)
         {
-            dataBase = new DataSet();
             SelectTheDatabase();
             MessageBox.Show("Created");
         }
@@ -41,32 +39,37 @@ namespace DataBaseManager
         // считывание таблиц
         public void ReadTables()
         {
-            this.reader = new StreamReader(this.folderBrowserDialog.SelectedPath + @"\main.txt");
-
-            string line = reader.ReadLine();
-            while (line != null)
+            if ((reader = new StreamReader(this.folderBrowserDialog.SelectedPath + @"\main.txt")) != null)
             {
-                this.dataBase.Tables.Add(line);
-                line = reader.ReadLine();
+                string line = reader.ReadLine();
+                while (line != null)
+                {
+                    dgv = new DataGridView();
+                    dgv.Name = line;
+                    tables.Add(dgv);
+                    line = reader.ReadLine();
+                }
+                reader.Close();
             }
-            reader.Close();
         }
 
-        public void AddColumns(DataTable table)
+        public void AddColumns(DataGridView table)
         {
-            this.reader = new StreamReader(this.folderBrowserDialog.SelectedPath + @"\" + table.TableName + @"\main.txt");
-            string column = reader.ReadLine();
-            while (column != null)
-            {
-                table.Columns.Add(column);
-                column = reader.ReadLine();
+            if ((reader = new StreamReader(this.folderBrowserDialog.SelectedPath + @"\" + table.Name + @"\main.txt")) != null  )
+            { 
+                string column = reader.ReadLine();
+                while (column != null)
+                {
+                    table.Columns.Add(column, column);
+                    column = reader.ReadLine();
+                }
+                reader.Close();
             }
-            reader.Close();
         }
 
-        public void AddData(DataTable table)
+        public void AddData(DataGridView table)
         {
-            this.reader = new StreamReader(this.folderBrowserDialog.SelectedPath + @"\" + table.TableName + @"\data.txt");
+            this.reader = new StreamReader(this.folderBrowserDialog.SelectedPath + @"\" + table.Name + @"\data.txt");
             string data = reader.ReadLine();
             while (data != null)
             {
@@ -79,7 +82,7 @@ namespace DataBaseManager
         // считывание схем таблиц
         public void ReadTablesSchema()
         {
-            foreach (DataTable table in this.dataBase.Tables)
+            foreach (DataGridView table in tables)
             {
                 AddColumns(table);
 
@@ -90,28 +93,27 @@ namespace DataBaseManager
         public DataGridView CreateDataGridView()
         {
             dgv = new DataGridView();
-            dgv.Width = 700;
-            dgv.Height = 300;
+            //dgv.Width = 2500;
+            //dgv.Height = 600;
             return dgv;
         }
 
         public void DisplayData()
         {
-            foreach (DataTable table in this.dataBase.Tables)
+            foreach (DataGridView table in tables)
             {
-                tabPage = new TabPage(table.TableName);
+                tabPage = new TabPage(table.Name);
                 tabControl1.TabPages.Add(tabPage);
-                dgv = CreateDataGridView();
-                dgv.DataSource = table;
 
-                tabPage.Controls.Add(dgv);
-                tables.Add(dgv);
+                tabPage.Controls.Add(table);
             }
         }
 
         private void openButton_Click(object sender, EventArgs e)
         {
-            this.dataBase = new DataSet();
+            tables = new List<DataGridView>();
+
+            tabControl1.TabPages.Clear();
 
             SelectTheDatabase();
 
@@ -146,20 +148,19 @@ namespace DataBaseManager
         {
             int i = CurrentTabPageIndex();
             int j = tables[i].SelectedCells[0].RowIndex;
-            dataBase.Tables[i].Rows.RemoveAt(j);
+            tables[i].Rows.RemoveAt(j);
         }
 
         private void deleteColumn_Click(object sender, EventArgs e)
         {
             int i = CurrentTabPageIndex();
             int j = tables[i].SelectedCells[0].ColumnIndex;
-            dataBase.Tables[i].Columns.RemoveAt(j);
+            tables[i].Columns.RemoveAt(j);
         }
 
         private void deleteTable_Click(object sender, EventArgs e)
         {
             int i = CurrentTabPageIndex();
-            dataBase.Tables.RemoveAt(i);
             tabControl1.TabPages.RemoveAt(i);
             tables.RemoveAt(i);
         }
@@ -169,7 +170,7 @@ namespace DataBaseManager
             if (textBox2.Text != "")
             {
                 int i = CurrentTabPageIndex();
-                dataBase.Tables[i].Columns.Add(textBox2.Text);
+                tables[i].Columns.Add(textBox2.Text, textBox2.Text);
                 textBox2.Clear();
             }
             else
@@ -182,15 +183,14 @@ namespace DataBaseManager
         {
             if (textBox2.Text != "")
             {
-                dataBase.Tables.Add(textBox2.Text);
                 tabPage = new TabPage(textBox2.Text);
                 tabControl1.TabPages.Add(tabPage);
                 dgv = CreateDataGridView();
-                dgv.DataSource = dataBase.Tables[dataBase.Tables.Count - 1];
+                dgv.Name = textBox2.Text;
                 tabPage.Controls.Add(dgv);
                 tables.Add(dgv);
                 textBox2.Clear();
-                tabControl1.SelectedIndex = dataBase.Tables.Count - 1; //сделать таб активным
+                tabControl1.SelectedIndex = tables.Count - 1; //сделать таб активным
             }
             else
             {
@@ -198,37 +198,42 @@ namespace DataBaseManager
             }
         }
 
-        private void saveAllChanges_Click(object sender, EventArgs e)
+        private void save_Click(object sender, EventArgs e)
         {
             StreamWriter sw;
             StreamWriter tableMain;
             StreamWriter swMain = new StreamWriter(folderBrowserDialog.SelectedPath + @"\main.txt");
-
-            foreach (DataTable table in dataBase.Tables)
+            int index = CurrentTabPageIndex();
+            
+            for (int i = 0; i < tables.Count; i++)
+            {                
+                swMain.WriteLine(tables[i].Name);
+            }
+            swMain.Close();
             {
-                swMain.WriteLine(table.TableName);
-                Directory.CreateDirectory(this.folderBrowserDialog.SelectedPath + @"\" + table.TableName);
+                Directory.CreateDirectory(this.folderBrowserDialog.SelectedPath + @"\" + tables[index].Name);
 
-                sw = new StreamWriter(this.folderBrowserDialog.SelectedPath + @"\" + table.TableName + @"\data.txt");
-                tableMain = new StreamWriter(this.folderBrowserDialog.SelectedPath + @"\" + table.TableName + @"\main.txt");
+                sw = new StreamWriter(this.folderBrowserDialog.SelectedPath + @"\" + tables[index].Name + @"\data.txt");
+                tableMain = new StreamWriter(this.folderBrowserDialog.SelectedPath + @"\" + tables[index].Name + @"\main.txt");
 
-                int countCol = table.Columns.Count;
-                int countR = table.Rows.Count;
+                int countCol = tables[index].Columns.Count;
+                int countR = tables[index].Rows.Count;
 
-                for (int i = 0; i < countCol; i++)
+                for (int k = 0; k < countCol; k++)
                 {
-                    tableMain.WriteLine(table.Columns[i].ColumnName);
+                    tableMain.WriteLine(tables[index].Columns[k].Name);
                 }
                 tableMain.Close();
 
-                for (int i = 0; i < countR; i++)
+                for (int k = 0; k < countR - 1; k++)
                 {
                     string line = "";
                     for (int j = 0; j < countCol - 1; j++)
                     {
-                        line += table.Rows[i][j].ToString() + " ";
+                        line += tables[index].Rows[k].Cells[j].Value.ToString() + " ";
+
                     }
-                    line += table.Rows[i][countCol - 1].ToString();
+                    line += tables[index].Rows[k].Cells[countCol - 1].Value.ToString();
                     sw.WriteLine(line);
                 }
                 sw.Close();
@@ -236,31 +241,6 @@ namespace DataBaseManager
             swMain.Close();
             MessageBox.Show("Saved!");
         }
-
-        private void selectButton_Click(object sender, EventArgs e)
-        {
-            int ind = CurrentTabPageIndex();
-            dataBase.Tables.Add("From" + dataBase.Tables[ind].TableName + "Select" + fromBox.Text);
-            tabPage = new TabPage("From" + dataBase.Tables[ind].TableName + "Select" + fromBox.Text);
-            tabControl1.TabPages.Add(tabPage);
-            dgv = CreateDataGridView();
-            dgv.DataSource = dataBase.Tables[dataBase.Tables.Count - 1];
-            tabPage.Controls.Add(dgv);
-            tables.Add(dgv);
-            tabControl1.SelectedIndex = dataBase.Tables.Count - 1;
-            int indNewTable = dataBase.Tables.Count - 1;
-            foreach (DataColumn column in dataBase.Tables[ind].Columns)
-            {
-                dataBase.Tables[indNewTable].Columns.Add(column.ColumnName);                
-            }
-            
-            foreach (DataRow row in dataBase.Tables[ind].Select(fromBox.Text + " " + selectBox.Text))
-            {
-                dataBase.Tables[indNewTable].Rows.Add(row.ItemArray);
-            }
-            fromBox.Clear();
-            selectBox.Clear();
-        }        
     }
 }
 

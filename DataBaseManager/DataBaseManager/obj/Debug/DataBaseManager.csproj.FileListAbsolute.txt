@@ -16,3 +16,12 @@ E:\Alsu\Documents\Visual Studio 2015\Projects\DataBaseManager\DataBaseManager\ob
 E:\Alsu\Documents\Visual Studio 2015\Projects\DataBaseManager\DataBaseManager\obj\Debug\DataBaseManager.csproj.GenerateResource.Cache
 E:\Alsu\Documents\Visual Studio 2015\Projects\DataBaseManager\DataBaseManager\bin\Debug\DataBaseManager.exe
 E:\Alsu\Documents\Visual Studio 2015\Projects\DataBaseManager\DataBaseManager\bin\Debug\DataBaseManager.pdb
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\bin\Debug\DataBaseManager.exe.config
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\obj\Debug\DataBaseManager.exe
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\obj\Debug\DataBaseManager.pdb
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\bin\Debug\DataBaseManager.exe
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\bin\Debug\DataBaseManager.pdb
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\obj\Debug\DataBaseManager.csprojResolveAssemblyReference.cache
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\obj\Debug\DataBaseManager.Form1.resources
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\obj\Debug\DataBaseManager.Properties.Resources.resources
+C:\Users\Alsu\Desktop\DataBaseManager\DataBaseManager\obj\Debug\DataBaseManager.csproj.GenerateResource.Cache
